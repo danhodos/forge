@@ -90,7 +90,8 @@ def setup(forge):
 @click.pass_context
 @click.option('-n', '--namespace', envvar='K8S_NAMESPACE', type=click.STRING)
 @click.option('--dry-run', is_flag=True)
-def build(ctx, namespace, dry_run):
+@click.option('--skip-push', is_flag=True, help='Do not push images after they are built.')
+def build(ctx, namespace, dry_run, skip_push):
     """Build deployment artifacts for a service.
 
     Deployment artifacts for a service consist of the docker
@@ -133,6 +134,7 @@ def build(ctx, namespace, dry_run):
     forge = ctx.obj
     forge.namespace = namespace
     forge.dry_run = dry_run
+    forge.skip_push = skip_push
     if ctx.invoked_subcommand is None:
         forge.execute(forge.build)
 

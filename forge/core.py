@@ -50,6 +50,7 @@ class Forge(object):
         self.scan_base = scan_base
         self.namespace = None
         self.dry_run = False
+        self.skip_push = False
         self.terminal = Terminal()
         self.discovery = Discovery(self)
 
@@ -253,7 +254,8 @@ class Forge(object):
     @task()
     def build(self, service):
         self.bake(service)
-        self.push(service)
+        if not self.skip_push:
+            self.push(service)
         return service, self.manifest(service)
 
     @task()
